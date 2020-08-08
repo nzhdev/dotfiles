@@ -101,3 +101,95 @@ call plug#begin('~/.vim/plugged')
     Plug 'kassio/neoterm'
 
 call plug#end()
+
+" vimrc for wsl
+" Disables swap file creation
+set noswapfile
+
+" Fixes colorscheme not loading properly
+set background=dark
+
+" Enables mouse support
+set mouse=a
+
+" Cursor configuration
+" if &term =~ '^xterm'
+          " solid underscore
+  "        let &t_SI .= "\<Esc>[0 q"
+          " solid block
+   "       let &t_EI .= "\<Esc>[2 q"
+          " 1 or 0 -> blinking block
+          " 2 solid block
+          " 3 -> blinking underscore
+          " 4 -> solid underscore
+          " Recent versions of xterm (282 or above) also support
+          " 5 -> blinking vertical bar
+          " 6 -> solid vertical bar
+" endif
+
+" Allows for Syntax highlighting
+syntax on
+
+" Uses system clipboard
+set clipboard=unnamedplus
+
+" WSL yank support
+let s:clip = '/mnt/c/Windows/System32/clip.exe'
+if executable(s:clip)
+        augroup WSLYank
+                autocmd!
+                autocmd TextYankPost * if v:event.operator ==# 'y' | call system(s:clip, @0) | endif
+        augroup END
+endif"
+
+" Disables annoying backspace feature
+set backspace=2
+
+" Numbers code lines
+set ruler
+set number
+
+" Tabs to spaces
+set expandtab
+set tabstop=4 
+
+" Show current mode
+set showmode
+
+" Vim Plug
+call plug#begin('~/.vim/plugged')
+    
+    " Auto pairs
+    Plug 'jiangmiao/auto-pairs'
+    " COC
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}    
+    " Better terminal support
+    Plug 'kassio/neoterm'
+    " Bar
+    Plug 'itchyny/lightline.vim'
+    " Colorscheme
+    Plug 'joshdick/onedark.vim'
+    
+call plug#end()
+
+" C++ hotkeys
+map <F8> :!g++ -std=c++17 -g -Wall -Wextra -pedantic -std=c++11 -O2 -Wshadow -Wformat=2 -Wfloat-equal -Wconversion -Wlogical-op -Wshift-overflow=2 -Wduplicated-cond -Wcast-qual -Wcast-align -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC -D_FORTIFY_SOURCE=2 -fsanitize=address -fsanitize=undefined -fno-sanitize-recover -fstack-protector % -o %:r <bar> clear <CR>
+map <F9> :!g++ -std=c++17 -g % -o %:r <bar> clear <CR>
+map <F10> :!./%:r <CR>
+
+" Configuring default colorscheme
+if (has("autocmd") && !has("gui_running"))
+        augroup colorset
+                autocmd!
+                let s:white = { "gui": "#ABB2BF", "cterm": "145", "cterm16" : "7"  }
+                autocmd ColorScheme * call onedark#set_highlight("Normal", { "fg": s:white  }) " `bg` will not be styled since there is no `bg` setting
+        augroup END
+endif"
+
+colorscheme onedark
+
+" Configuring bar
+set laststatus=2
+set cmdheight=1
+set noshowmode
+let g:lightline = {'colorscheme': 'ayu_light'}
