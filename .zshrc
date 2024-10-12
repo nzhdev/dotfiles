@@ -9,8 +9,10 @@ alias sshstudent="ssh -Y nzhangho@linux.student.cs.uwaterloo.ca"
 
 eval "$(zellij setup --generate-auto-start zsh)"
 
+export STARSHIP_CONFIG=~/.config/starship/starship.toml
+
 source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
-source /opt/homebrew/opt/spaceship/spaceship.zsh
+eval "$(starship init zsh)"
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
